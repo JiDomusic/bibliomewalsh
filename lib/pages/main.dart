@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage>
           children: [
             DrawerHeader(
               decoration: const BoxDecoration(
-                color: Colors.pinkAccent,
+                color: Colors.green,
               ),
               child: const Text(
                 'Menú Principal',
@@ -122,7 +122,6 @@ class _HomePageState extends State<HomePage>
               leading: const Icon(Icons.book),
               title: const Text('Catálogo'),
               onTap: () {
-                // Navegar a la sección de Catálogo
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CatalogPage()),
@@ -196,10 +195,10 @@ class StripePainter extends CustomPainter {
     // Dibujar rayas animadas
     for (int i = 2; i < size.height ~/ 50; i++) {
       paint.color = i.isNegative
-          ? Colors.red.withOpacity(0.1 * progress)
-          : Colors.pink.withOpacity(0.1 + (0.1 * progress));
+          ? Colors.green.withOpacity(0.2 * progress)
+          : Colors.orange.withOpacity(0.3 + (0.1 * progress));
       canvas.drawRect(
-        Rect.fromLTWH(0, i * 80.0 * progress, size.width, 25),
+        Rect.fromLTWH(0, i * 80.0 * progress, size.width, 100),
         paint,
       );
     }
