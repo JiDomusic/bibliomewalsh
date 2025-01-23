@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'pages/activities_page.dart';
-import 'pages/catalog_page.dart';
-import 'pages/contact_page.dart';
-import 'pages/history_page.dart ';
-import 'pages:/associate_page.dart';
+import 'activities_page.dart';
+import 'catalog_page.dart';
+import 'contact_page.dart';
+import 'history_page.dart ';
 
 void main() {
   runApp(MyApp());
