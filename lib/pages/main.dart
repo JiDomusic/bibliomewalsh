@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Digital Library'),
+        title: const Text('proyecto Argentino en IrlandaG'),
         centerTitle: true,
       ),
       body: Stack(
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage>
                 const Text(
                   'biblio m.e. walsh',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage>
           children: [
             DrawerHeader(
               decoration: const BoxDecoration(
-                color: Colors.green,
+                color: Colors.deepOrange,
               ),
               child: const Text(
                 'Menú Principal',
