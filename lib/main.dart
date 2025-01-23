@@ -1,9 +1,10 @@
-import 'package:biblomewalsh/pages/activities_page.dart';
-import 'package:biblomewalsh/pages/associate_page.dart';
-import 'package:biblomewalsh/pages/catalog_page.dart';
-import 'package:biblomewalsh/pages/contact_page.dart';
-import 'package:biblomewalsh/pages/history_page.dart';
 import 'package:flutter/material.dart';
+
+import 'pages/activities_page.dart';
+import 'pages/catalog_page.dart';
+import 'pages/contact_page.dart';
+import 'pages/history_page.dart ';
+import 'pages:/associate_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -89,6 +90,10 @@ class _HomePageState extends State<HomePage>
                 ElevatedButton(
                   onPressed: () {
                     // Acción al presionar (llevar a un apartado del menú)
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CatalogPage()),
+                    );
                   },
                   child: const Text('Explorar el Catálogo'),
                 ),
@@ -118,6 +123,10 @@ class _HomePageState extends State<HomePage>
               title: const Text('Catálogo'),
               onTap: () {
                 // Navegar a la sección de Catálogo
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CatalogPage()),
+                );
               },
             ),
             ListTile(
@@ -125,6 +134,10 @@ class _HomePageState extends State<HomePage>
               title: const Text('Asociate'),
               onTap: () {
                 // Navegar a la sección de Asociate
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AsociatePage()),
+                );
               },
             ),
             ListTile(
@@ -132,6 +145,10 @@ class _HomePageState extends State<HomePage>
               title: const Text('Actividades'),
               onTap: () {
                 // Navegar a la sección de Actividades
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ActivitiesPage()),
+                );
               },
             ),
             ListTile(
@@ -139,6 +156,10 @@ class _HomePageState extends State<HomePage>
               title: const Text('Breve Historia'),
               onTap: () {
                 // Navegar a la sección de Breve Historia
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HistoryPage()),
+                );
               },
             ),
             ListTile(
@@ -146,6 +167,10 @@ class _HomePageState extends State<HomePage>
               title: const Text('Contacto'),
               onTap: () {
                 // Navegar a la sección de Contacto
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ContactPage()),
+                );
               },
             ),
           ],
@@ -163,7 +188,7 @@ class StripePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..style = PaintingStyle.fill as PaintingStyle
+      ..style = PaintingStyle.fill
       ..strokeWidth = 1.0;
 
     // Dibujar rayas animadas
