@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'activities_page.dart';
+import 'associate_page.dart';
 import 'catalog_page.dart';
 import 'contact_page.dart';
 import 'history_page.dart ';
@@ -135,7 +136,7 @@ class _HomePageState extends State<HomePage>
                 // Navegar a la sección de Asociate
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AsociatePage()),
+                  MaterialPageRoute(builder: (context) => AssociatePage()),
                 );
               },
             ),
@@ -178,6 +179,8 @@ class _HomePageState extends State<HomePage>
     );
   }
 }
+
+class AsociatePage {}
 
 class StripePainter extends CustomPainter {
   final double progress;
