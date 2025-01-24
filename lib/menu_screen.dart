@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'section_screen.dart';
-
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
 
@@ -18,7 +16,7 @@ class MenuScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      SectionScreen(section: 'Sección ${index + 1}'),
+                      adminDash(section: 'Sección ${index + 1}'),
                 ),
               );
             },
@@ -27,4 +25,6 @@ class MenuScreen extends StatelessWidget {
       ),
     );
   }
+
+  adminDash({required String section}) {}
 }

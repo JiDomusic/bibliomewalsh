@@ -206,7 +206,7 @@ class StripePainter extends CustomPainter {
     for (int i = 2; i < size.height ~/ 50; i++) {
       paint.color = i.isNegative
           ? Colors.green.withOpacity(0.2 * progress)
-          : Colors.orange.withOpacity(0.3 + (0.1 * progress));
+          : Colors.green.withOpacity(0.3 + (0.1 * progress));
       canvas.drawRect(
         Rect.fromLTWH(0, i * 80.0 * progress, size.width, 100),
         paint,
