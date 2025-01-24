@@ -1,12 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import '../firebase_options.dart';
-import 'activities_page.dart';
-import 'associate_page.dart';
-import 'catalog_page.dart';
-import 'contact_page.dart';
-import 'history_page.dart ';
+import 'firebase_options.dart';
+import 'pages/activities_page.dart';
+import 'pages/associate_page.dart';
+import 'pages/catalog_page.dart';
+import 'pages/contact_page.dart';
+import 'pages/history_page.dart ';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
