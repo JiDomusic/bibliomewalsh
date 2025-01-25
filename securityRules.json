@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "admin": {
+      "allow read": "auth != null",
+      "allow write": "auth != null"
+    },
+    "**": {
+      "allow read": true,
+      "allow write": false
+    }
+  }
+}
