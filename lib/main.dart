@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'admin_dash.dart';
 import 'firebase_options.dart';
 import 'pages/activities_page.dart';
 import 'pages/associate_page.dart';
@@ -13,6 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MyApp());
 }
 
@@ -27,6 +29,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
+      routes: {
+        '/admin': (context) => LoginUploadPage(),
+      },
       home: HomePage(),
     );
   }
@@ -204,7 +209,7 @@ class StripePainter extends CustomPainter {
 
     // Dibujar rayas animadas
     for (int i = 2; i < size.height ~/ 50; i++) {
-      paint.color = i.isNegative
+      paint.color = i.isNaN
           ? Colors.green.withOpacity(0.2 * progress)
           : Colors.green.withOpacity(0.3 + (0.1 * progress));
       canvas.drawRect(

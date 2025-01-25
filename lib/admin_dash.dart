@@ -23,8 +23,12 @@ class _LoginUploadPageState extends State<LoginUploadPage> {
   final TextEditingController _descriptionController = TextEditingController();
 
   String? _userRole; // Admin or User
+  bool _isLoading = false;
 
   Future<void> _login() async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       // Authentication with Firebase
       UserCredential userCredential =
@@ -46,11 +50,18 @@ class _LoginUploadPageState extends State<LoginUploadPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al iniciar sesión: $e')),
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   Future<void> _uploadContent() async {
     if (_image != null && _descriptionController.text.isNotEmpty) {
+      setState(() {
+        _isLoading = true;
+      });
       try {
         // Upload image to Firebase Storage
         final storageRef = FirebaseStorage.instance
@@ -67,7 +78,7 @@ class _LoginUploadPageState extends State<LoginUploadPage> {
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Contenido subido con éxito')),
+          const SnackBar(content: Text('Contenido subido con éxito')),
         );
         _descriptionController.clear();
         setState(() {
@@ -77,10 +88,14 @@ class _LoginUploadPageState extends State<LoginUploadPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error al subir contenido: $e')),
         );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Por favor, completa todos los campos')),
+        const SnackBar(content: Text('Por favor, completa todos los campos')),
       );
     }
   }
@@ -95,66 +110,113 @@ class _LoginUploadPageState extends State<LoginUploadPage> {
     }
   }
 
+  Widget _buildAdminPanel() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _image != null
+            ? Image.file(_image!, height: 200)
+            : const Placeholder(fallbackHeight: 200),
+        const SizedBox(height: 10),
+        ElevatedButton(
+          onPressed: _pickImage,
+          child: const Text('Seleccionar Imagen'),
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          controller: _descriptionController,
+          decoration: const InputDecoration(labelText: 'Descripción'),
+          maxLines: 3,
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: _uploadContent,
+          child: const Text('Subir Contenido'),
+        ),
+        const Divider(height: 30),
+        Expanded(
+          child: StreamBuilder<QuerySnapshot>(
+            stream:
+                FirebaseFirestore.instance.collection('content').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return const Center(
+                    child: Text('No hay contenido subido aún.'));
+              }
+
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final content = snapshot.data!.docs[index];
+                  return ListTile(
+                    leading: Image.network(content['imageUrl'], width: 50),
+                    title: Text(content['description']),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () async {
+                        await FirebaseFirestore.instance
+                            .collection('content')
+                            .doc(content.id)
+                            .delete();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Contenido eliminado.')),
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Inicio de Sesión y Gestión de Contenido')),
-      body: _userRole == null
-          ? Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextField(
-                    controller: _emailController,
-                    decoration:
-                        InputDecoration(labelText: 'Correo electrónico'),
-                  ),
-                  TextField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(labelText: 'Contraseña'),
-                    obscureText: true,
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _login,
-                    child: Text('Iniciar Sesión'),
-                  ),
-                ],
-              ),
-            )
-          : _userRole == 'admin'
+      appBar: AppBar(title: const Text('Gestión de Contenido')),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _userRole == null
               ? Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _image != null
-                          ? Image.file(_image!, height: 200)
-                          : Placeholder(fallbackHeight: 200),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _pickImage,
-                        child: Text('Seleccionar Imagen'),
-                      ),
-                      SizedBox(height: 10),
                       TextField(
-                        controller: _descriptionController,
-                        decoration: InputDecoration(labelText: 'Descripción'),
-                        maxLines: 3,
+                        controller: _emailController,
+                        decoration: const InputDecoration(
+                            labelText: 'Correo electrónico'),
                       ),
-                      SizedBox(height: 20),
+                      TextField(
+                        controller: _passwordController,
+                        decoration:
+                            const InputDecoration(labelText: 'Contraseña'),
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: _uploadContent,
-                        child: Text('Subir Contenido'),
+                        onPressed: _login,
+                        child: const Text('Iniciar Sesión'),
                       ),
                     ],
                   ),
                 )
-              : Center(
-                  child: Text(
-                      'Bienvenido, usuario normal. Aquí iría el Dashboard.'),
-                ),
+              : _userRole == 'admin'
+                  ? Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: _buildAdminPanel(),
+                    )
+                  : const Center(
+                      child: Text(
+                          'Bienvenido, usuario normal. Aquí iría el Dashboard.'),
+                    ),
     );
   }
 }
